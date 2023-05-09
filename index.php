@@ -1,3 +1,7 @@
+<?php
+    require_once('./Produit.php');
+    require_once('./ProduitSold.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +23,7 @@
     <input type="date" name="datePreemption" required><br><br>
     <label>Nom du fournisseur : </label>
     <input type="text" name="nomFournisseur" required><br><br>
-    <input type="submit" value="Ajouter le produit">
+    <input type="submit" value="Ajouter">
 </form>
 
 <h2>Liste des produits</h2>
@@ -33,24 +37,13 @@
         <th>Nom du fournisseur</th>
     </tr>
     <?php
-        require_once('app.php');
 
-		$conn = new mysqli("localhost", "root", "", "gestion_achats");
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $produit = new Produit($_POST['nomProduit'], $_POST['prixProduit'], $_POST['datePreemption'], $_POST['nomFournisseur']);
+            $produit->ajouterProduit('produits.txt');
+        }
 
-        $result = $conn->query("SELECT * FROM produits");
-
-        if ($result->num_rows > 0)
-            while ($row = $result->fetch_assoc()) {
-                echo '<tr>';
-                echo '<td>' . $row['idProduit'] . '</td>';
-                echo '<td>' . $row['nomProduit'] . '</td>';
-                echo '<td>' . $row['prixProduit'] . '</td>';
-                echo '<td>' . $row['datePreemption'] . '</td>';
-                echo '<td>' . $row['nomFournisseur'] . '</td>';
-                echo '</tr>';
-            }
-
-        $conn->close();
+        Produit::afficherProduits('produits.txt');
     ?>
 </table>
 
