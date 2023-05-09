@@ -17,11 +17,12 @@ class Produit {
     }
 
     public function afficherProduit($file) {
-        
+
         echo "<h2>liste produits</h2>";
     
         if (file_exists($file)) {
             $produits = unserialize(file_get_contents($file));
+            
             if (!empty($produits)) {
                 echo "<table>";
                 echo "<tr><th>ID</th><th>Nom</th><th>Prix</th><th>Date de préemption</th><th>Nom du fournisseur</th><th>Remise</th><th>Actions</th></tr>";
